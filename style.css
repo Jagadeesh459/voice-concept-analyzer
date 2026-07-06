@@ -1,0 +1,172 @@
+:root {
+  --bg: #0b0f17;
+  --panel: #111827;
+  --panel-soft: #151b27;
+  --line: #2b3445;
+  --text: #f8fafc;
+  --muted: #9aa4b2;
+  --blue: #3b82f6;
+  --green: #22c55e;
+  --amber: #f39c12;
+  --red: #e74c3c;
+}
+
+.stApp {
+  background: var(--bg);
+  color: var(--text);
+}
+
+section[data-testid="stSidebar"] {
+  background: #090d14;
+}
+
+.block-container {
+  max-width: 1040px;
+  padding-top: 2.5rem;
+  padding-bottom: 3rem;
+}
+
+h1, h2, h3 {
+  letter-spacing: 0;
+}
+
+.app-subtitle {
+  color: var(--muted);
+  margin-top: -0.65rem;
+  margin-bottom: 1.5rem;
+}
+
+.top-rule {
+  border-top: 1px solid var(--line);
+  margin: 1.25rem 0 1.7rem;
+}
+
+.reference-box,
+.status-box,
+.result-panel,
+.metric-tile {
+  border: 1px solid var(--line);
+  background: var(--panel);
+  border-radius: 8px;
+}
+
+.reference-box {
+  padding: 1.1rem 1.2rem;
+  min-height: 188px;
+}
+
+.reference-box h2 {
+  font-size: 1.6rem;
+  margin: 0 0 0.85rem;
+}
+
+.reference-box p {
+  line-height: 1.65;
+  margin: 0;
+}
+
+.status-box {
+  background: #12314f;
+  color: #58a6ff;
+  padding: 1rem 1.2rem;
+  margin-top: 1.2rem;
+}
+
+.success-strip {
+  background: #123f2a;
+  border-radius: 8px;
+  color: var(--green);
+  font-weight: 700;
+  padding: 0.95rem 1.2rem;
+  margin-bottom: 1.4rem;
+}
+
+.result-panel {
+  padding: 1.25rem;
+}
+
+.transcript-text {
+  line-height: 1.75;
+  color: #f2f5f9;
+}
+
+.score-number {
+  font-size: 2.4rem;
+  line-height: 1;
+  margin: 0.4rem 0 0.8rem;
+}
+
+.level-label {
+  font-size: 1.65rem;
+  font-weight: 800;
+}
+
+.level-strong {
+  color: var(--green);
+}
+
+.level-moderate {
+  color: var(--amber);
+}
+
+.level-poor {
+  color: var(--red);
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1.2rem;
+}
+
+.metric-tile {
+  padding: 1rem;
+}
+
+.metric-label {
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.metric-value {
+  font-size: 1.85rem;
+  font-weight: 700;
+}
+
+.small-muted {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+div[data-testid="stFileUploader"] section {
+  background: #242733;
+  border: 1px dashed #4b5563;
+  border-radius: 8px;
+}
+
+.stButton > button,
+.stDownloadButton > button {
+  border: 1px solid #334155;
+  border-radius: 7px;
+  background: #111827;
+  color: var(--text);
+}
+
+.stButton > button:hover,
+.stDownloadButton > button:hover {
+  border-color: var(--blue);
+  color: var(--text);
+}
+
+@media (max-width: 760px) {
+  .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .score-number {
+    font-size: 2rem;
+  }
+}
