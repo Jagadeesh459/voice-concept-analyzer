@@ -196,10 +196,10 @@ def main() -> None:
             st.audio(uploaded_file)
             audio_path = save_uploaded_file(uploaded_file)
             transcript_override = st.text_area(
-                "Student Transcript",
+                "Student Transcription",
                 value="",
                 height=130,
-                placeholder="For free deployment, paste the student transcript here. If left empty, the app uses Whisper only when it is installed locally.",
+                placeholder="Paste the transcribed student explanation here before analysis.",
             )
             if st.button("Analyze Concept Understanding", type="primary"):
                 with st.spinner("Processing and evaluating..."):
