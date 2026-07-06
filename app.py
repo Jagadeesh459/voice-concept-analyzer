@@ -77,12 +77,12 @@ def render_reference(reference_text: str) -> None:
 
 def run_analysis(audio_path: Path, reference_text: str, transcript_override: str = "") -> None:
     transcript = transcript_override.strip() or speech_to_text(audio_path)
-    if not transcript:
-        raise ValueError("Please paste the student transcription before analysis.")
+    has_transcript = bool(transcript)
     audio_features = extract_audio_features(audio_path)
-    filler = filler_word_ratio(transcript)
-    similarity = semantic_similarity(transcript, reference_text)
+    filler = filler_word_ratio(transcript) if has_transcript else 0.0
+    similarity = semantic_similarity(transcript, reference_text) if has_transcript else 0.0
     score, level, color = evaluate_understanding(similarity, filler, audio_features)
+    display_transcript = transcript or "No transcription provided. Audio-only evaluation was generated."
 
     waveform_path = OUTPUT_DIR / f"waveform_{uuid4().hex}.png"
     save_waveform(audio_path, waveform_path)
@@ -96,9 +96,9 @@ def run_analysis(audio_path: Path, reference_text: str, transcript_override: str
         "level": level,
     }
     pdf_path = OUTPUT_DIR / f"concept_report_{uuid4().hex}.pdf"
-    generate_pdf_report(pdf_path, reference_text, transcript, waveform_path, metrics)
+    generate_pdf_report(pdf_path, reference_text, display_transcript, waveform_path, metrics)
 
-    st.session_state.transcript = transcript
+    st.session_state.transcript = display_transcript
     st.session_state.audio_features = audio_features
     st.session_state.similarity = similarity
     st.session_state.filler = filler
@@ -198,10 +198,10 @@ def main() -> None:
             st.audio(uploaded_file)
             audio_path = save_uploaded_file(uploaded_file)
             transcript_override = st.text_area(
-                "Student Transcription",
+                "Student Transcription (Optional)",
                 value="",
                 height=130,
-                placeholder="Paste the transcribed student explanation here before analysis.",
+                placeholder="Paste the transcribed student explanation here for text-based similarity and filler analysis.",
             )
             if st.button("Analyze Concept Understanding", type="primary"):
                 with st.spinner("Processing and evaluating..."):
