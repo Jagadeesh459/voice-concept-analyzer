@@ -77,6 +77,8 @@ def render_reference(reference_text: str) -> None:
 
 def run_analysis(audio_path: Path, reference_text: str, transcript_override: str = "") -> None:
     transcript = transcript_override.strip() or speech_to_text(audio_path)
+    if not transcript:
+        raise ValueError("Please paste the student transcription before analysis.")
     audio_features = extract_audio_features(audio_path)
     filler = filler_word_ratio(transcript)
     similarity = semantic_similarity(transcript, reference_text)
@@ -203,8 +205,13 @@ def main() -> None:
             )
             if st.button("Analyze Concept Understanding", type="primary"):
                 with st.spinner("Processing and evaluating..."):
-                    run_analysis(audio_path, reference_text, transcript_override)
-                    st.rerun()
+                    try:
+                        run_analysis(audio_path, reference_text, transcript_override)
+                        st.rerun()
+                    except ValueError as exc:
+                        st.error(str(exc))
+                    except Exception as exc:
+                        st.error(f"Analysis failed: {exc}")
         else:
             st.markdown(
                 '<div class="status-box">Upload an audio file to begin analysis.</div>',

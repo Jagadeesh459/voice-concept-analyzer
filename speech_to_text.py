@@ -15,13 +15,13 @@ DEMO_TRANSCRIPT = (
 
 
 def speech_to_text(audio_path: str | Path) -> str:
-    """Transcribe audio with Whisper if installed; otherwise return a demo fallback."""
+    """Transcribe audio with Whisper if installed; otherwise return an empty result."""
     try:
         import whisper
 
         model = whisper.load_model("base")
         result = model.transcribe(str(audio_path), fp16=False)
         text = str(result.get("text", "")).strip()
-        return text or DEMO_TRANSCRIPT
+        return text
     except Exception:
-        return DEMO_TRANSCRIPT
+        return ""
