@@ -13,6 +13,8 @@ This project is a Streamlit application for evaluating spoken conceptual explana
 - `style.css` - Streamlit visual styling
 - `requirements.txt` - Python dependencies
 
+Full code-level documentation is available in `CODE_DOCUMENTATION.md`.
+
 ## Run Locally
 
 ```powershell
