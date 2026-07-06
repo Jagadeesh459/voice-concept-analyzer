@@ -15,7 +15,7 @@ DEMO_TRANSCRIPT = (
 
 
 def speech_to_text(audio_path: str | Path) -> str:
-    """Transcribe audio with Whisper; return a clear demo fallback if unavailable."""
+    """Transcribe audio with Whisper if installed; otherwise return a demo fallback."""
     try:
         import whisper
 

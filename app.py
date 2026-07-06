@@ -75,8 +75,8 @@ def render_reference(reference_text: str) -> None:
     )
 
 
-def run_analysis(audio_path: Path, reference_text: str) -> None:
-    transcript = speech_to_text(audio_path)
+def run_analysis(audio_path: Path, reference_text: str, transcript_override: str = "") -> None:
+    transcript = transcript_override.strip() or speech_to_text(audio_path)
     audio_features = extract_audio_features(audio_path)
     filler = filler_word_ratio(transcript)
     similarity = semantic_similarity(transcript, reference_text)
@@ -195,9 +195,15 @@ def main() -> None:
         if uploaded_file is not None:
             st.audio(uploaded_file)
             audio_path = save_uploaded_file(uploaded_file)
+            transcript_override = st.text_area(
+                "Student Transcript",
+                value="",
+                height=130,
+                placeholder="For free deployment, paste the student transcript here. If left empty, the app uses Whisper only when it is installed locally.",
+            )
             if st.button("Analyze Concept Understanding", type="primary"):
                 with st.spinner("Processing and evaluating..."):
-                    run_analysis(audio_path, reference_text)
+                    run_analysis(audio_path, reference_text, transcript_override)
                     st.rerun()
         else:
             st.markdown(

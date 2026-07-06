@@ -11,30 +11,24 @@ import numpy as np
 
 
 def _load_audio(audio_path: str | Path, target_sr: int = 16000) -> tuple[np.ndarray, int]:
-    """Load audio with librosa when available, falling back to soundfile."""
+    """Load audio with SoundFile, using a small optional resampler when available."""
     path = str(audio_path)
-    try:
-        import librosa
+    import soundfile as sf
 
-        y, sr = librosa.load(path, sr=target_sr, mono=True)
-        return np.asarray(y, dtype=float), int(sr)
-    except Exception:
-        import soundfile as sf
+    data, sr = sf.read(path)
+    if data.ndim > 1:
+        data = data.mean(axis=1)
+    data = np.asarray(data, dtype=float)
+    if sr != target_sr:
+        try:
+            from scipy.signal import resample_poly
 
-        data, sr = sf.read(path)
-        if data.ndim > 1:
-            data = data.mean(axis=1)
-        data = np.asarray(data, dtype=float)
-        if sr != target_sr:
-            try:
-                from scipy.signal import resample_poly
-
-                gcd = np.gcd(sr, target_sr)
-                data = resample_poly(data, target_sr // gcd, sr // gcd)
-                sr = target_sr
-            except Exception:
-                pass
-        return data, int(sr)
+            gcd = np.gcd(sr, target_sr)
+            data = resample_poly(data, target_sr // gcd, sr // gcd)
+            sr = target_sr
+        except Exception:
+            pass
+    return data, int(sr)
 
 
 def extract_audio_features(audio_path: str | Path) -> Dict[str, float]:

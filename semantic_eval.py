@@ -4,8 +4,6 @@ import math
 import re
 from collections import Counter
 
-import numpy as np
-
 
 DEFAULT_REFERENCE = (
     "Machine Learning is a subset of artificial intelligence that allows systems "
@@ -31,14 +29,6 @@ def _bag_of_words_similarity(text_a: str, text_b: str) -> float:
 
 
 def semantic_similarity(student_text: str, reference_text: str = DEFAULT_REFERENCE) -> float:
-    """Compute Sentence-BERT cosine similarity, with a deterministic local fallback."""
-    try:
-        from sentence_transformers import SentenceTransformer
-
-        model = SentenceTransformer("all-MiniLM-L6-v2")
-        vectors = model.encode([student_text, reference_text], normalize_embeddings=True)
-        score = float(np.dot(vectors[0], vectors[1]))
-    except Exception:
-        score = _bag_of_words_similarity(student_text, reference_text)
-
+    """Compute a lightweight cosine similarity for free-tier deployment."""
+    score = _bag_of_words_similarity(student_text, reference_text)
     return round(max(0.0, min(score, 1.0)), 4)

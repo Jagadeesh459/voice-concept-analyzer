@@ -1,12 +1,5 @@
 streamlit
-openai-whisper
-sentence-transformers
-librosa
 soundfile
 matplotlib
 reportlab
-nltk
-torch
 numpy
-scipy
-audiofile
